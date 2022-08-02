@@ -3,6 +3,7 @@ import { tezosData } from "./Tezos/tezos.js";
 import { createDoc } from "./Tezos/createDoc.js";
 import { lookForDups } from "./helpers/lookForDups.js";
 import { getClientTrxs } from "./Polygon/clientTrxs_fromPolygon.js";
+import { updateDestinationHash} from "./Polygon/get_dest_hash.js";
 import { trxStatus  , getDestinationTrx} from "./Elrond/elrond.js";
 import { getAccountErc721Hashes} from "./Ethereum/ethereum.js"
 import "dotenv/config";
@@ -16,8 +17,9 @@ import "dotenv/config";
   const db = client.db("myFirstDatabase");
   const collection = db.collection("bridge-event");
 
-  // const POLYGON = await collection.find({ chainName: "POLYGON" }).toArray();
+  // const POLYGON = await collection.find({toChainName:"POLYGON" , toHash:null} ).toArray();
   // console.log(POLYGON.length);
+  await updateDestinationHash(collection)
 
   // const TEZOS = await collection.find({ chainName: "TEZOS" }).toArray();
   // console.log(TEZOS.length);
@@ -30,6 +32,6 @@ import "dotenv/config";
   // // await trxStatus(ELROND)
   // await getDestinationTrx(7 , 1103)
 
-  await getAccountErc721Hashes("0xB8bC9550aBfd7A21DC1cfa2655f4d9c5454750aa")
+  // await getAccountErc721Hashes("0xB8bC9550aBfd7A21DC1cfa2655f4d9c5454750aa")
 
 })();

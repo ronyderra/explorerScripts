@@ -1,9 +1,9 @@
 import { ethers } from "ethers";
 import minterAbi from "../abi//Minter.json" assert { type: "json" };
-import {elegantUnpair} from "./helpers/actionId.js"
+import {elegantUnpair} from "./actionId.js"
 
-export const DestinationActionId = async (hash , rpc) => {
-    console.log(hash)
+export const evmDestinationActionId = async (hash , rpc) => {
+    // console.log(hash)
     const provider = await new ethers.providers.JsonRpcProvider(rpc);
     const getTransaction = await provider.getTransaction(hash);
     const value = ethers.utils.parseEther("1.0");
@@ -18,6 +18,6 @@ export const DestinationActionId = async (hash , rpc) => {
     // console.log("action id after elegant UNpair:", elegantUnpair(actionId));
 
     const originalActionId = elegantUnpair(actionId)
-    console.log(  "originalActionId: ",  originalActionId[0])
+    // console.log(  "originalActionId: ",  originalActionId[0])
     return(originalActionId[0])
   };
