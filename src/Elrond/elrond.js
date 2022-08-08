@@ -1,5 +1,5 @@
 import axios from "axios";
-import { elegantPair } from "../helpers/actionId.js";
+import { elegantPair } from "../Helpers/actionId.js";
 
 export const trxStatus = async (hashes) => {
   let goodOnes = 0;

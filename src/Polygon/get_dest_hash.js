@@ -1,6 +1,6 @@
 import axios from "axios";
-import { evmDestinationActionId } from "../helpers/evmDestinationActionId.js";
-import { elegantUnpair } from "../helpers/actionId.js";
+import { evmDestinationActionId } from "../Helpers/evmDestinationActionId.js";
+import { elegantUnpair } from "../Helpers/actionId.js";
 
 export const get_all_trxs_from_contract = async () => {
   try {

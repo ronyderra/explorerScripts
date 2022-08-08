@@ -1,12 +1,12 @@
 import axios from "axios";
 import { ethers } from "ethers";
 import minterAbi from "../abi//Minter.json" assert { type: "json" };
-import {elegantUnpair} from "../helpers/actionId.js"
+import {elegantUnpair} from "../Helpers/actionId.js"
 
-export const getAccountErc721Hashes = async (address) => {
+export const getAccountErc721Hashes = async () => {
   try {
     const res = await axios.get(
-      "https://api.etherscan.io/api?module=account&action=tokennfttx&address=0xB8bC9550aBfd7A21DC1cfa2655f4d9c5454750aa&startblock=0&endblock=999999999&sort=asc&apikey=EKPJSTE16QR2E9XCUC991T67S1K3WF4U6G"
+      "https://api.etherscan.io/api?module=account&action=tokennfttx&address=0x9Ba1bE12F267cf324D02193De440942E44698117&startblock=0&endblock=999999999&sort=asc&apikey=EKPJSTE16QR2E9XCUC991T67S1K3WF4U6G"
     );
     const mints = res.data.result.filter(
       (e) => e.from === "0x0000000000000000000000000000000000000000"

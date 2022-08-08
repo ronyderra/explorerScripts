@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import minterAbi from "../abi//Minter.json" assert { type: "json" };
+import minterAbi from "../abi/Minter.json" assert { type: "json" };
 import {elegantUnpair} from "./actionId.js"
 
 export const evmDestinationActionId = async (hash , rpc) => {
