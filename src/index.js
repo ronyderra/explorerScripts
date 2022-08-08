@@ -1,11 +1,12 @@
 import { MongoClient } from "mongodb";
 import { tezosData } from "./Tezos/tezos.js";
 import { createDoc } from "./Tezos/createDoc.js";
-import { lookForDups } from "./helpers/lookForDups.js";
+import { lookForDups } from "./Helpers/lookForDups.js";
 import { getClientTrxs } from "./Polygon/clientTrxs_fromPolygon.js";
 import { updateDestinationHash} from "./Polygon/get_dest_hash.js";
 import { trxStatus  , getDestinationTrx} from "./Elrond/elrond.js";
 import { getAccountErc721Hashes} from "./Ethereum/ethereum.js"
+import {get_Wallet_nfts_list} from "./Elrond/walletNfts.js"
 import "dotenv/config";
 
 (async () => {
@@ -17,9 +18,15 @@ import "dotenv/config";
   const db = client.db("myFirstDatabase");
   const collection = db.collection("bridge-event");
 
+  await get_Wallet_nfts_list("erd1fu99vy55z9x0e66sdrusvepq63zhf9720f0sc9vdtvscdjdshrcs2y5m39" ,"HOKI-518891" )
+  // await get_Wallet_nfts_list("erd1fu99vy55z9x0e66sdrusvepq63zhf9720f0sc9vdtvscdjdshrcs2y5m39" ,"HOKIZUKI-2fe117" )
+  // await get_Wallet_nfts_list("erd1cffq40t0dfpmd7q4azsmvvepyuenk8pthudvrmsyk6rgk95rqvgs3larpt" ,"HOKIZUKI-2fe117" )
+
+
+
   // const POLYGON = await collection.find({toChainName:"POLYGON" , toHash:null} ).toArray();
   // console.log(POLYGON.length);
-  await updateDestinationHash(collection)
+  // await updateDestinationHash(collection)
 
   // const TEZOS = await collection.find({ chainName: "TEZOS" }).toArray();
   // console.log(TEZOS.length);
