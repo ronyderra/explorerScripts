@@ -10,10 +10,20 @@ const call_uri = async (nftUri) => {
 };
 
 const parse_Data = async (uridata) => {
-  const originalContract = uridata?.wrapped?.contract;
-  const originalTokenId = uridata?.wrapped?.tokenId;
+
+  let originalTokenId = "";
   const originalChainNonce = uridata?.wrapped?.origin;
-  console.log({ originalContract, originalTokenId, originalChainNonce });
+
+  if (originalChainNonce === "2") {
+    let nonce = Number(uridata?.wrapped?.nonce);
+    nonce = nonce.toString(16);
+    originalTokenId = uridata?.wrapped?.tokenId + `-0${nonce}`;
+  } else {
+    originalTokenId = uridata?.wrapped?.tokenId;
+  }
+
+  const originalContract = uridata?.wrapped?.contract;
+  console.log({ originalContract, originalTokenId: originalTokenId?.toString(), originalChainNonce });
   return { originalContract, originalTokenId, originalChainNonce };
 };
 
@@ -27,12 +37,12 @@ export const updateUnfreezTrxs = async (db, unfreezTrxs) => {
   for (const item of unfreezTrxs) {
     i++;
     console.log(i);
-    console.log(item.fromHash)
-    if(item.nftUri === "")continue;
+    console.log(item.fromHash);
+    if (item.nftUri === "") continue;
     const uriResp = await call_uri(item.nftUri);
-    if(!uriResp)continue;
+    if (!uriResp) continue;
     const parsedData = await parse_Data(uriResp);
-    if(!parsedData.originalTokenId)continue;
+    if (!parsedData.originalTokenId) continue;
     await update_db(parsedData, db, item.fromHash);
   }
 };
