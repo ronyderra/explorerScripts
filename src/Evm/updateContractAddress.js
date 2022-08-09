@@ -6,22 +6,28 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const decode_Trx = async (chainName, hash) => {
-  switch (chainName) {
-    case "VECHAIN":
-      const vechainContractAddr = config.web3.find((c) => c.name === chainName)?.contract;
-      const trx = await axios.get(`https://region3.xp.network/vechain/transactions/${hash}`);
-      const vechainProvider = await new ethers.providers.JsonRpcProvider(MainNetRpcUri[chainName]);
-      const contract = Minter__factory.connect(vechainContractAddr, vechainProvider);
-      const decoded = contract.interface.parseTransaction(trx.data.clauses[0]);
-      return decoded;
+  try {
+    switch (chainName) {
+      case "VECHAIN":
+        const vechainContractAddr = config.web3.find((c) => c.name === chainName)?.contract;
+        const trx = await axios.get(`https://region3.xp.network/vechain/transactions/${hash}`);
+        const vechainProvider = await new ethers.providers.JsonRpcProvider(
+          MainNetRpcUri[chainName]
+        );
+        const contract = Minter__factory.connect(vechainContractAddr, vechainProvider);
+        const decoded = contract.interface.parseTransaction(trx.data.clauses[0]);
+        return decoded;
 
-    default:
-      const contractAddr = config.web3.find((c) => c.name === chainName.toUpperCase())?.contract;
-      const evmProvider = await new ethers.providers.JsonRpcProvider(MainNetRpcUri[chainName]);
-      const res = await evmProvider.getTransaction(hash);
-      const evmContract = Minter__factory.connect(contractAddr, evmProvider);
-      const evmDecoded = evmContract.interface.parseTransaction(res);
-      return evmDecoded;
+      default:
+        const contractAddr = config.web3.find((c) => c.name === chainName.toUpperCase())?.contract;
+        const evmProvider = await new ethers.providers.JsonRpcProvider(MainNetRpcUri[chainName]);
+        const res = await evmProvider.getTransaction(hash);
+        const evmContract = Minter__factory.connect(contractAddr, evmProvider);
+        const evmDecoded = evmContract.interface.parseTransaction(res);
+        return evmDecoded;
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -38,4 +44,3 @@ export const updateContractAddress = async (trxsWithoutContractAddress, collecti
     }
   }
 };
-
