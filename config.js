@@ -54,7 +54,7 @@ export const MainNetRpcUri = {
     return value;
   }
 
-  const config = {
+  export const config = {
     web3: [
       {
         name: "AURORA",
