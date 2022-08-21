@@ -38,7 +38,7 @@ export const updateContractAddress = async (trxsWithoutContractAddress, collecti
       const args = decoded.args;
       const address = args["erc721Contract"] || args["burner"] || args["erc1155Contract"];
       console.log({ hash: element.fromHash, address });
-      // await collection.updateOne({ fromHash: element.fromHash }, { $set: { contract: address } });
+      await collection.updateOne({ fromHash: element.fromHash }, { $set: { contract: address } });
     } catch (err) {
       console.log(err);
     }

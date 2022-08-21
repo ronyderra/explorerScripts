@@ -10,7 +10,6 @@ const call_uri = async (nftUri) => {
 };
 
 const parse_Data = async (uridata) => {
-
   let originalTokenId = "";
   const originalChainNonce = uridata?.wrapped?.origin;
 
@@ -23,8 +22,14 @@ const parse_Data = async (uridata) => {
   }
 
   const originalContract = uridata?.wrapped?.contract;
-  console.log({ originalContract, originalTokenId: originalTokenId?.toString(), originalChainNonce });
-  return { originalContract, originalTokenId, originalChainNonce };
+  const originalUri = uridata?.wrapped?.original_uri
+  console.log({
+    originalContract,
+    originalTokenId: originalTokenId?.toString(),
+    originalChainNonce,
+    originalUri
+  });
+  return { originalContract, originalTokenId, originalChainNonce ,originalUri };
 };
 
 const update_db = async (parsedData, db, fromHash) => {

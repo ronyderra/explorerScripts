@@ -8,7 +8,7 @@ import { trxStatus, getDestinationTrx } from "./Elrond/elrond.js";
 import { getAccountErc721Hashes } from "./Ethereum/ethereum.js";
 import { get_Wallet_nfts_list } from "./Elrond/walletNfts.js";
 import { updateUnfreezTrxs } from "./Helpers/getUnfreezUriData.js";
-import {getVechainData} from "./Vechain/getVechainData.js"
+// import {getVechainData} from "./Vechain/getVechainData.js"
 
 import "dotenv/config";
 
@@ -45,9 +45,17 @@ import "dotenv/config";
 
   // await getAccountErc721Hashes("0xB8bC9550aBfd7A21DC1cfa2655f4d9c5454750aa")
 
-  // const UNFREEZTRXS = await collection.find({ fromHash: "e833e7bb0d6805e4f5af07500b7e00a68b0fba996135651e2158ab2cdb4c078d" }).toArray();
+  // const UNFREEZTRXS = await collection.find({ type: "Unfreeze" }).sort( { createdAt: -1 } ).toArray();
   // console.log(UNFREEZTRXS.length);
-  // await lookForDups(UNFREEZTRXS ,collection)
+  // // await lookForDups(UNFREEZTRXS ,collection)
   // await updateUnfreezTrxs(collection, UNFREEZTRXS);
- await getVechainData()
+//  await getVechainData()
+
+
+  // const UNFREEZTRXS = await collection.find({ type: "Unfreeze" }).sort( { createdAt: -1 } ).toArray();
+  // console.log(UNFREEZTRXS.length);
+  // // await lookForDups(UNFREEZTRXS ,collection)
+  // await updateUnfreezTrxs(collection, UNFREEZTRXS);
+//  await getVechainData()
+
 })();

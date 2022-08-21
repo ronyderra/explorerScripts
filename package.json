@@ -4,6 +4,9 @@
   "main": "./src/index.js",
   "license": "MIT",
   "type": "module",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
   "dependencies": {
     "@elrondnetwork/erdjs": "^11.0.0",
     "@taquito/taquito": "^13.0.1",
