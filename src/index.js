@@ -9,10 +9,12 @@ import { getAccountErc721Hashes } from "./Ethereum/ethereum.js";
 import { get_Wallet_nfts_list } from "./Elrond/walletNfts.js";
 import { updateUnfreezTrxs } from "./Helpers/getUnfreezUriData.js";
 // import {getVechainData} from "./Vechain/getVechainData.js"
-
+import {secret} from "../src/Secret/secret.js"
 import "dotenv/config";
 
 (async () => {
+secret()
+
   const DB_URL = process.env.DB_URL;
   const client = new MongoClient(DB_URL);
   await client.connect();
