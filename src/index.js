@@ -13,7 +13,7 @@ import {secret} from "../src/Secret/secret.js"
 import "dotenv/config";
 
 (async () => {
-secret()
+await secret()
 
   const DB_URL = process.env.DB_URL;
   const client = new MongoClient(DB_URL);
