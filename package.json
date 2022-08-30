@@ -12,6 +12,8 @@
     "@taquito/taquito": "^13.0.1",
     "@temple-wallet/dapp": "^7.0.0",
     "@vechain/connex": "^2.0.11",
+    "@vechain/connex-driver": "^2.0.10",
+    "@vechain/connex-framework": "^2.0.10",
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",
     "ethers": "^5.6.9",

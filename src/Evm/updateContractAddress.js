@@ -2,6 +2,10 @@ import axios from "axios";
 import { ethers } from "ethers";
 import { Minter__factory } from "xpnet-web3-contracts";
 import { config, MainNetRpcUri } from "../../config.js";
+import { Framework } from '@vechain/connex-framework'
+import { Driver, SimpleNet } from '@vechain/connex-driver'
+import { VechainAbi } from "../abi/VechainAbi.js";
+import { abi } from "../abi/abi.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -44,3 +48,39 @@ export const updateContractAddress = async (trxsWithoutContractAddress, collecti
     }
   }
 };
+
+export const updateCollectionName = async (fromHash, fromChainName , collection) => {
+  try {
+    const decoded = await decode_Trx(fromChainName, fromHash);
+    const args = decoded?.args
+    if (!args) return undefined;
+    const address = args["erc721Contract"] || args["burner"] || args["erc1155Contract"]
+
+
+    if (address) {
+      switch (fromChainName) {
+        case "VECHAIN":
+          const net = new SimpleNet('https://sync-mainnet.veblocks.net')
+          const driver = await Driver.connect(net)
+          const connex = new Framework(driver)
+          const nameObj = VechainAbi.find(({ name }) => name === "name");
+          const res = await connex.thor.account(address).method(nameObj).call();
+          const collectionName = res.decoded['0'].toUpperCase()
+          console.log({ collectionName })
+          await collection.updateOne({ fromHash }, { $set: { collectionName } });
+          return;
+        default:
+          const evmRpc = config.web3.find((c) => c.name === fromChainName.toUpperCase())?.node;
+          const provider = await new ethers.providers.JsonRpcProvider(evmRpc);
+          const contractInstance = await new ethers.Contract(address, abi, provider);
+          const name = await contractInstance.functions.name();
+          console.log("getCollectionData Line 49", name)
+        // return name[0]?.toUpperCase()
+      }
+    } else {
+      return undefined
+    }
+  } catch (err) {
+    console.log(err.message)
+  }
+}

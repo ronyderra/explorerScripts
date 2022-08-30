@@ -7,17 +7,24 @@ export const secret = async () => {
 
         const secretjs = await SecretNetworkClient.create({
             grpcWebUrl,
-            chainId:"secret-4",
+            chainId: "secret-4",
         });
 
         // TransferHash -  CB12B41511F2CC5D8D03BEAFCC85AE9DB29CDBBEFAF9A73488CB7CD8CBD23904
         //UnfreezeHash - F71488BBD0A9AEC71B64D60FA51870F6B8798106530677D2CC2986FAC6903259
-        console.log("gothere")
-        console.log(secretjs.query.getTx)
+
         const hash = 'CB12B41511F2CC5D8D03BEAFCC85AE9DB29CDBBEFAF9A73488CB7CD8CBD23904'
-        const res = await secretjs.query.getTx(hash);
-        console.log(res.arrayLog)
-       
+        let res
+        await secretjs.query.getTx(hash).then(r => res = r).catch(e => { console.log(e.message); res = undefined })
+        // console.log(res.arrayLog)
+
+          
+        //   const result = await secretjs.query.compute.queryContract({
+        //     contractAddress: "secret18f66qjjuyudmh7q6s50hwpt9y679lanjs82jkg",
+        //     codeHash: "", // optional but way faster
+        //     query: { token_info: {} },
+        //   }) 
+        // console.log(result)
 
         console.log("-----------------------------")
 
@@ -45,6 +52,12 @@ export const secret = async () => {
             originalUri: null,
             createdAt: new Date(),
         };
+
+        if (!res) {
+            console.log("nodata")
+            return undefined
+        }
+console.log(res.arrayLog)
         res.arrayLog.forEach(async (i) => {
             let parsed;
             switch (i.key) {
@@ -57,8 +70,8 @@ export const secret = async () => {
                     break;
                 case "TransferSnip721":
                     parsed = JSON.parse(i.value)
-                    console.log(i)
-                    console.log(parsed)
+                    // console.log(i)
+                    // console.log(parsed)
 
                     eventObj.nftUri = parsed.info.public_metadata.token_uri
                     eventObj.tokenId = parsed.info.token_id
@@ -84,7 +97,7 @@ export const secret = async () => {
             eventObj.originalUri = res.originalUri
             eventObj.tokenId = res.originalTokenId
         }
-        console.log(eventObj)
+        // console.log(eventObj)
     } catch (err) {
         console.log(err)
     }

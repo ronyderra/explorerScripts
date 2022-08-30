@@ -49,6 +49,6 @@ export const updateUnfreezTrxs = async (db, unfreezTrxs) => {
     const parsedData = await parse_Data(uriResp);
     if (!parsedData.originalTokenId) continue;
     return(parsedData)
-    // await update_db(parsedData, db, item.fromHash);
+    await update_db(parsedData, db, item.fromHash);
   }
 };

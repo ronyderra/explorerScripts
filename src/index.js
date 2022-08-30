@@ -9,11 +9,12 @@ import { getAccountErc721Hashes } from "./Ethereum/ethereum.js";
 import { get_Wallet_nfts_list } from "./Elrond/walletNfts.js";
 import { updateUnfreezTrxs } from "./Helpers/getUnfreezUriData.js";
 // import {getVechainData} from "./Vechain/getVechainData.js"
-import {secret} from "../src/Secret/secret.js"
+import { updateCollectionName } from "./Evm/updateContractAddress.js"
+import { secret } from "../src/Secret/secret.js"
 import "dotenv/config";
 
 (async () => {
-await secret()
+  await secret()
 
   const DB_URL = process.env.DB_URL;
   const client = new MongoClient(DB_URL);
@@ -47,17 +48,24 @@ await secret()
 
   // await getAccountErc721Hashes("0xB8bC9550aBfd7A21DC1cfa2655f4d9c5454750aa")
 
-  // const UNFREEZTRXS = await collection.find({ type: "Unfreeze" }).sort( { createdAt: -1 } ).toArray();
-  // console.log(UNFREEZTRXS.length);
-  // // await lookForDups(UNFREEZTRXS ,collection)
-  // await updateUnfreezTrxs(collection, UNFREEZTRXS);
-//  await getVechainData()
+  //   const UNFREEZTRXS = await collection.find({ type: "Unfreeze" }).sort( { createdAt: -1 } ).toArray();
+  //   console.log(UNFREEZTRXS.length);
+  //   // await lookForDups(UNFREEZTRXS ,collection)
+  //   await updateUnfreezTrxs(collection, UNFREEZTRXS);
+  //  await getVechainData()
 
 
   // const UNFREEZTRXS = await collection.find({ type: "Unfreeze" }).sort( { createdAt: -1 } ).toArray();
   // console.log(UNFREEZTRXS.length);
   // // await lookForDups(UNFREEZTRXS ,collection)
   // await updateUnfreezTrxs(collection, UNFREEZTRXS);
-//  await getVechainData()
+  //  await getVechainData()
+
+
+  // const vechainTrxs = await collection.find({ chainName: "VECHAIN" }).sort({ createdAt: -1 }).toArray();
+  // // await lookForDups(UNFREEZTRXS, collection)
+  // for (let element of vechainTrxs) {
+  //   await updateCollectionName(element.fromHash, "VECHAIN", collection)
+  // }
 
 })();
