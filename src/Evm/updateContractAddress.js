@@ -9,7 +9,7 @@ import { abi } from "../abi/abi.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-const decode_Trx = async (chainName, hash) => {
+export const decode_Trx = async (chainName, hash) => {
   try {
     switch (chainName) {
       case "VECHAIN":
@@ -28,7 +28,10 @@ const decode_Trx = async (chainName, hash) => {
         const res = await evmProvider.getTransaction(hash);
         const evmContract = Minter__factory.connect(contractAddr, evmProvider);
         const evmDecoded = evmContract.interface.parseTransaction(res);
-        return evmDecoded;
+        console.log(evmDecoded.functionFragment.inputs)
+        console.log(evmDecoded)
+
+        // return evmDecoded;
     }
   } catch (err) {
     console.log(err);
@@ -49,7 +52,7 @@ export const updateContractAddress = async (trxsWithoutContractAddress, collecti
   }
 };
 
-export const updateCollectionName = async (fromHash, fromChainName , collection) => {
+export const updateCollectionName = async (fromHash, fromChainName, collection) => {
   try {
     const decoded = await decode_Trx(fromChainName, fromHash);
     const args = decoded?.args
@@ -74,7 +77,8 @@ export const updateCollectionName = async (fromHash, fromChainName , collection)
           const provider = await new ethers.providers.JsonRpcProvider(evmRpc);
           const contractInstance = await new ethers.Contract(address, abi, provider);
           const name = await contractInstance.functions.name();
-          console.log("getCollectionData Line 49", name)
+          await collection.updateOne({ fromHash }, { $set: { collectionName: name[0]?.toUpperCase() } });
+          console.log({ fromHash, name })
         // return name[0]?.toUpperCase()
       }
     } else {

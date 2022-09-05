@@ -1,7 +1,7 @@
 import { SecretNetworkClient, grpc } from "secretjs";
 import { updateUnfreezTrxs } from "../Helpers/getUnfreezUriData.js"
 
-export const secret = async () => {
+export const secret = async (collection) => {
     try {
         const grpcWebUrl = "https://secret-4.api.trivium.network:9091";
 
@@ -10,21 +10,9 @@ export const secret = async () => {
             chainId: "secret-4",
         });
 
-        // TransferHash -  CB12B41511F2CC5D8D03BEAFCC85AE9DB29CDBBEFAF9A73488CB7CD8CBD23904
-        //UnfreezeHash - F71488BBD0A9AEC71B64D60FA51870F6B8798106530677D2CC2986FAC6903259
-
-        const hash = 'CB12B41511F2CC5D8D03BEAFCC85AE9DB29CDBBEFAF9A73488CB7CD8CBD23904'
+        const hash = '40FB912D55FE71B6D3E279B61C0A06989EE85E599560C6AFB4D59847FFFA9514'
         let res
         await secretjs.query.getTx(hash).then(r => res = r).catch(e => { console.log(e.message); res = undefined })
-        // console.log(res.arrayLog)
-
-          
-        //   const result = await secretjs.query.compute.queryContract({
-        //     contractAddress: "secret18f66qjjuyudmh7q6s50hwpt9y679lanjs82jkg",
-        //     codeHash: "", // optional but way faster
-        //     query: { token_info: {} },
-        //   }) 
-        // console.log(result)
 
         console.log("-----------------------------")
 
@@ -36,16 +24,16 @@ export const secret = async () => {
             toChain: "",
             fromChainName: "SECRET",
             toChainName: "",
-            fromHash: "",
+            fromHash: hash,
             txFees: "",
             type: "",
-            status: "",
+            status: "Pending",
             toHash: "",
             senderAddress: "",
             targetAddress: "",
             nftUri: "",
-            collectionName: "",
-            contract: "",
+            collectionName: "SECRET",
+            contract: "SECRET",
             originalChainNonce: null,
             originalContract: null,
             originalTokenId: null,
@@ -57,7 +45,6 @@ export const secret = async () => {
             console.log("nodata")
             return undefined
         }
-console.log(res.arrayLog)
         res.arrayLog.forEach(async (i) => {
             let parsed;
             switch (i.key) {
@@ -97,7 +84,8 @@ console.log(res.arrayLog)
             eventObj.originalUri = res.originalUri
             eventObj.tokenId = res.originalTokenId
         }
-        // console.log(eventObj)
+        console.log(eventObj)
+        await collection.insertOne(eventObj)
     } catch (err) {
         console.log(err)
     }

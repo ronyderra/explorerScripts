@@ -9,12 +9,14 @@ import { getAccountErc721Hashes } from "./Ethereum/ethereum.js";
 import { get_Wallet_nfts_list } from "./Elrond/walletNfts.js";
 import { updateUnfreezTrxs } from "./Helpers/getUnfreezUriData.js";
 // import {getVechainData} from "./Vechain/getVechainData.js"
-import { updateCollectionName } from "./Evm/updateContractAddress.js"
+import { updateCollectionName ,decode_Trx } from "./Evm/updateContractAddress.js"
 import { secret } from "../src/Secret/secret.js"
+import { UpdateTrx } from "./Tezos/updateCollName.js"
+
 import "dotenv/config";
 
 (async () => {
-  await secret()
+ 
 
   const DB_URL = process.env.DB_URL;
   const client = new MongoClient(DB_URL);
@@ -24,6 +26,10 @@ import "dotenv/config";
   const db = client.db("myFirstDatabase");
   const collection = db.collection("bridge-event");
 
+  await secret(collection)
+
+  // await decode_Trx("VELAS" , "0xda2618a3c4f8bb7aba75e2c6697deace7788b66444a31a113d1fc8583c1623b7")
+
   // await get_Wallet_nfts_list(
   //   "erd1fu99vy55z9x0e66sdrusvepq63zhf9720f0sc9vdtvscdjdshrcs2y5m39",
   //   "HOKI-518891"
@@ -31,7 +37,7 @@ import "dotenv/config";
   // await get_Wallet_nfts_list("erd1fu99vy55z9x0e66sdrusvepq63zhf9720f0sc9vdtvscdjdshrcs2y5m39" ,"HOKIZUKI-2fe117" )
   // await get_Wallet_nfts_list("erd1cffq40t0dfpmd7q4azsmvvepyuenk8pthudvrmsyk6rgk95rqvgs3larpt" ,"HOKIZUKI-2fe117" )
 
-  // const POLYGON = await collection.find({toChainName:"POLYGON" , toHash:null} ).toArray();
+  // const POLYGON = await collection.find({toChainName:"POLYGON" , fromHash:"YYURR7NEOOKRAV7QCOMXBXIP3S6EWWELPZUTWSNN3OFXJLVVBZGA"} ).toArray();
   // console.log(POLYGON.length);
   // await updateDestinationHash(collection)
 
@@ -62,10 +68,17 @@ import "dotenv/config";
   //  await getVechainData()
 
 
-  // const vechainTrxs = await collection.find({ chainName: "VECHAIN" }).sort({ createdAt: -1 }).toArray();
-  // // await lookForDups(UNFREEZTRXS, collection)
+  // const vechainTrxs = await collection.find({ chainName: "HARMONY" }).sort({ createdAt: -1 }).toArray();
+  // await lookForDups(vechainTrxs, collection)
+  // console.log(vechainTrxs.length)
   // for (let element of vechainTrxs) {
-  //   await updateCollectionName(element.fromHash, "VECHAIN", collection)
+  //   await updateCollectionName(element.fromHash, "HARMONY", collection)
   // }
+
+
+  // const tezos = await collection.find({chainName:"TEZOS" ,  collectionName:null}).sort({ createdAt: -1 }).toArray();
+  // // await lookForDups(tezos, collection)
+  // console.log(tezos.length)
+  // UpdateTrx(tezos, collection)
 
 })();
