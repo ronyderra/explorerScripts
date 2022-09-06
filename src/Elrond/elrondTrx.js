@@ -7,15 +7,16 @@ import { config, chainNonceToName } from "../../config.js";
 
 // const provider = new ProxyProvider(config.elrond.node);
 
-const providerRest = axios.create({ baseURL: config.elrond.api });
-
 export const elrondTrx = async (fromHash) => {
   try {
-    const event = await eventFromTxn(fromHash, providerRest);
+    
+    const event = await eventFromTxn(fromHash);
     if (!event) return;
+
     const collectionName = Base64.decode(event.evs[0].topics[0]).toUpperCase();
 
     event.evs.forEach(async (e) => {
+
       if (e.topics.length < 5) {
         return undefined;
       }
@@ -33,7 +34,6 @@ export const elrondTrx = async (fromHash) => {
       const nonce = bigIntFromBeElrd(Base64.toUint8Array(e.topics[6]));
 
       let type = "Unfreeze";
-
       switch (e.identifier) {
         case "withdrawNft": {
           type = "Unfreeze";
@@ -45,7 +45,6 @@ export const elrondTrx = async (fromHash) => {
         case "freezeSendNft": {
           type = "Transfer";
           tokenId = Base64.decode(e.topics[5]) + "-" + nonce.toString(16);
-          console.log({ tokenId });
           const nftName = Base64.decode(e.topics[7]);
           uri = Base64.decode(e.topics[8]);
           break;
@@ -53,6 +52,7 @@ export const elrondTrx = async (fromHash) => {
       }
 
       const orghash = await getOriginalHash(fromHash);
+
 
       const eventObj = {
         actionId: (parseFloat(action_id) + 512).toString(),
@@ -73,7 +73,7 @@ export const elrondTrx = async (fromHash) => {
         collectionName,
         createdAt: new Date(),
       };
-      // console.log("transfer event: ", eventObj);
+      console.log("transfer event: ", eventObj);
     });
   } catch (e) {
     console.log(e, "elrond Error");
@@ -132,8 +132,8 @@ export async function getFrozenTokenAttrs(token, nonce) {
   }
 }
 
-export async function eventFromTxn(txHash, providerRest) {
-  const apiResp = await providerRest.get(
+export async function eventFromTxn(txHash) {
+  const apiResp = await axios.get(
     `https://api.elrond.com/transaction/${txHash}?withResults=true`
   );
   const sender = apiResp.data.data?.transaction?.sender || "";
