@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 export const getClientTrxs = async (address, collection) => {
   try {
     const allTrxs = await axios.get(
