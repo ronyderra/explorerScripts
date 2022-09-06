@@ -26,7 +26,7 @@ export const updateDestinationHash = async (collection) => {
 
     const trxWithoutToHash = await collection
       .find({
-        toChainName: "POLYGON",
+        toChain: "7",
         actionId: originalActionId.toString(),
         toHash: null,
       })
@@ -34,7 +34,7 @@ export const updateDestinationHash = async (collection) => {
 
     if (trxWithoutToHash.length === 1) {
       await collection.updateOne(
-        { toChainName: "POLYGON", actionId: originalActionId.toString(), toHash: null },
+        { toChain: "7", actionId: originalActionId.toString(), toHash: null },
         { $set: { toHash: item.hash.toString() } }
       );
 
