@@ -69,7 +69,7 @@ export const updateCollectionName = async (fromHash, fromChainName, collection) 
           const nameObj = VechainAbi.find(({ name }) => name === "name");
           const res = await connex.thor.account(address).method(nameObj).call();
           const collectionName = res.decoded['0'].toUpperCase()
-          console.log({ collectionName })
+          // console.log({ collectionName })
           await collection.updateOne({ fromHash }, { $set: { collectionName } });
           return;
         default:
@@ -78,8 +78,8 @@ export const updateCollectionName = async (fromHash, fromChainName, collection) 
           const contractInstance = await new ethers.Contract(address, abi, provider);
           const name = await contractInstance.functions.name();
           await collection.updateOne({ fromHash }, { $set: { collectionName: name[0]?.toUpperCase() } });
-          console.log({ fromHash, name })
-        // return name[0]?.toUpperCase()
+          // console.log({ fromHash, name })
+        return name[0]?.toUpperCase()
       }
     } else {
       return undefined

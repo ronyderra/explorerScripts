@@ -1,4 +1,6 @@
 import axios from "axios";
+import { ethers } from "ethers";
+import minterAbi from "../abi/Minter.json" assert { type: "json" };
 
 const call_uri = async (nftUri) => {
   try {
@@ -29,7 +31,7 @@ const parse_Data = async (uridata) => {
   //   originalChainNonce,
   //   originalUri
   // });
-  return { originalContract, originalTokenId, originalChainNonce ,originalUri };
+  return { originalContract, originalTokenId, originalChainNonce, originalUri };
 };
 
 const update_db = async (parsedData, db, fromHash) => {
@@ -48,7 +50,14 @@ export const updateUnfreezTrxs = async (db, unfreezTrxs) => {
     if (!uriResp) continue;
     const parsedData = await parse_Data(uriResp);
     if (!parsedData.originalTokenId) continue;
-    return(parsedData)
-    await update_db(parsedData, db, item.fromHash);
+
+
+    const provider = await new ethers.providers.JsonRpcProvider("https://bsc-dataseed.binance.org/");
+    const contract = new ethers.Contract(parsedData.originalContract, minterAbi.abi, provider)
+    console.log(parsedData.originalContract)
+    console.log(contract.functions)
+    return;
+    // console.log(name)
+    // await update_db(parsedData, db, item.fromHash);
   }
 };

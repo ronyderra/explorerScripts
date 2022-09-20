@@ -13,7 +13,12 @@ export const elrondTrx = async (fromHash) => {
     const event = await eventFromTxn(fromHash);
     if (!event) return;
 
-    const collectionName = Base64.decode(event.evs[0].topics[0]).toUpperCase();
+    const collectionName = Base64.decode(event.evs[1].topics[0]).toUpperCase();
+    
+    const res = await axios.get(`https://api.elrond.com/transactions/${"293ae607551c8b4352b8474c4d0b44663df6ab6c273b7c2ed5e3b0affebecba0"}`)
+    console.log(res.data.action.arguments.transfers[0].identifier);
+    console.log(res.data.operations[0].identifier);
+
 
     event.evs.forEach(async (e) => {
 

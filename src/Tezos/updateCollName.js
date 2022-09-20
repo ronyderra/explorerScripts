@@ -1,4 +1,5 @@
 import axios from "axios";
+import fetch from 'node-fetch';
 
 const getCollName = async (hash) => {
     try {
@@ -8,12 +9,17 @@ const getCollName = async (hash) => {
         let data;
         let uri;
 
-        for (let i = 0; i < 20; i++) {
-            data = await axios.get(`https://api.tzkt.io/v1/operations/${hash}`)
-            if (data?.data) {
-                break;
-            }
-        }
+        // for (let i = 0; i < 20; i++) {
+
+        data = await fetch(`https://api.tzkt.io/v1/operations/${hash}`)
+
+        const d = await data.json()
+        console.log(d)
+        // if (await data.json()) {
+        //     console.log(await data.json())
+        //     break;
+        // }
+        // }
         if (!data) return;
 
         // console.log(data.data)
@@ -54,19 +60,19 @@ const getCollName = async (hash) => {
 
         return { tokenId, contractAdd, collectionName, uri }
     } catch (err) {
-        console.log(err)
+        console.log(err.message)
     }
 }
 
 
-export const UpdateTrx = async (tezosArray, collection) => {
+export const UpdateTrx = async (tezosArray) => {
     for (let element of tezosArray) {
 
         const collName = await getCollName(element.fromHash)
 
-        if (collName.collectionName) {
+        if (collName?.collectionName) {
             console.log({ collName })
-            await collection.updateOne({ fromHash: element.fromHash }, { $set: { collectionName: collName.collectionName, contract: collName.contractAdd } });
+            // await collection.updateOne({ fromHash: element.fromHash }, { $set: { collectionName: collName.collectionName, contract: collName.contractAdd } });
         }
     }
 }

@@ -10,7 +10,7 @@ export const secret = async (collection) => {
             chainId: "secret-4",
         });
 
-        const hash = '40FB912D55FE71B6D3E279B61C0A06989EE85E599560C6AFB4D59847FFFA9514'
+        const hash = 'DD030B6CBC852413CDF4A8C2755438B5D74EE4537A018D6E7CB5B86A38C6AFF9'
         let res
         await secretjs.query.getTx(hash).then(r => res = r).catch(e => { console.log(e.message); res = undefined })
 
