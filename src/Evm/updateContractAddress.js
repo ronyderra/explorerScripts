@@ -28,10 +28,10 @@ export const decode_Trx = async (chainName, hash) => {
         const res = await evmProvider.getTransaction(hash);
         const evmContract = Minter__factory.connect(contractAddr, evmProvider);
         const evmDecoded = evmContract.interface.parseTransaction(res);
-        console.log(evmDecoded.functionFragment.inputs)
-        console.log(evmDecoded)
-
-        // return evmDecoded;
+        // console.log(evmDecoded.functionFragment.inputs)
+        // console.log(evmDecoded)
+        // console.log(res);
+        return evmDecoded;
     }
   } catch (err) {
     console.log(err);
@@ -78,8 +78,8 @@ export const updateCollectionName = async (fromHash, fromChainName, collection) 
           const contractInstance = await new ethers.Contract(address, abi, provider);
           const name = await contractInstance.functions.name();
           await collection.updateOne({ fromHash }, { $set: { collectionName: name[0]?.toUpperCase() } });
-          // console.log({ fromHash, name })
-        return name[0]?.toUpperCase()
+          console.log({ fromHash, name })
+          return name[0]?.toUpperCase()
       }
     } else {
       return undefined

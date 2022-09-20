@@ -18,7 +18,7 @@ export const MainNetRpcUri = {
     TEZOS: "https://mainnet.smartpy.io",
     IOTEX: "https://babel-api.mainnet.iotex.io",
     AURORA: "https://mainnet.aurora.dev",
-    GODWOKEN: "https://mainnet.godwoken.io/rpc",
+    GODWOKEN: "https://v1.mainnet.godwoken.io/rpc",
     GATECHAIN: "https://evm.gatenode.cc",
     VECHAIN: "https://sync-mainnet.veblocks.net",
     // TODO: Algorand
@@ -105,6 +105,14 @@ export const MainNetRpcUri = {
         nonce: getOrThrow("IOTEX_NONCE"),
         id: "iotex",
         actionIdOffset: 10,
+      },
+      {
+        name: "GODWOKEN",
+        node: getOrThrow("GODWOKEN_RPC_URL"),
+        contract: getOrThrow("GODWOKEN_MINTER_ADDRESS"),
+        nonce: getOrThrow("GODWOKEN_NONCE"),
+        id: "godwoken",
+        // actionIdOffset: 10,
       },
       {
         name: "FANTOM",

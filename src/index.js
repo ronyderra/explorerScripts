@@ -1,6 +1,7 @@
 import { MongoClient } from "mongodb";
 import { updateCollName } from "./Tron/getCollectionData.js"
-import {updateTokenId} from "./Elrond/elrondTokenId.js"
+import { updateTokenId } from "./Elrond/elrondTokenId.js"
+import { updateCollectionName } from "./Evm/updateContractAddress.js"
 
 
 import "dotenv/config";
@@ -20,13 +21,16 @@ import "dotenv/config";
   // const res = await collection.find({ status: "Pending" }).toArray()
   // console.log(res.length)
 
-// await elrondTrx("293ae607551c8b4352b8474c4d0b44663df6ab6c273b7c2ed5e3b0affebecba0")
+  // await elrondTrx("293ae607551c8b4352b8474c4d0b44663df6ab6c273b7c2ed5e3b0affebecba0")
 
 
 
-  const elrond = await collection.find({ chainName: "ELROND" }).sort({ createdAt: -1 }).toArray();
-  console.log(elrond.length)
-  await updateTokenId(elrond, collection)
+  const godwoken = await collection.find({ chainName: "GODWOKEN" }).sort({ createdAt: -1 }).toArray();
+  console.log(godwoken.length)
+  for (let item of godwoken) {
+    await updateCollectionName(item.fromHash, item.fromChainName, collection)
+  }
+
 
 
   // const tron = await collection.find({ chainName: "TRON" }).sort({ createdAt: -1 }).toArray();
