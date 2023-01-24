@@ -8,3 +8,4 @@ export function elegantUnpair(z) {
     return x >= y ? x * x + x + y : y * y + x;
   }
   
+  console.log( elegantUnpair(1197));

@@ -12,12 +12,13 @@ export const evmDestinationActionId = async (hash , rpc) => {
     const FormatTypes = ethers.utils.FormatTypes;
     iface.format(FormatTypes.json);
     const res3 = iface.parseTransaction({ data: transactionData, value });
+    // console.log(res3);
     const actionId = res3.args["actionId"]?.toString();
   
-    console.log("action Id:", actionId);
-    console.log("action id after elegant UNpair:", elegantUnpair(actionId));
+    // console.log("action Id:", actionId);
+    // console.log("action id after elegant UNpair:", elegantUnpair(actionId));
 
     const originalActionId = elegantUnpair(actionId)
-    console.log(  "originalActionId: ",  originalActionId[0])
-    // return(originalActionId[0])
+    // console.log(  "originalActionId: ",  originalActionId[0])
+    return(originalActionId[0])
   };

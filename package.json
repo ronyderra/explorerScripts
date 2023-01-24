@@ -18,10 +18,12 @@
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",
     "ethers": "^5.6.9",
+    "moment": "^2.29.1",
     "mongodb": "^4.8.1",
     "node-fetch": "^3.2.10",
     "nodemon": "^2.0.19",
     "secretjs": "^1.4.5",
+    "web3": "^1.8.1",
     "web3-providers-connex": "^0.7.4",
     "xp.network": "git+https://github.com/xp-network/xpjs#bleeding-edge"
   }

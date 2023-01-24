@@ -13,44 +13,50 @@ export const get_all_trxs_from_contract = async () => {
     console.log(error.message);
   }
 };
+"https://api.bscscan.com/api?module=account&action=txlist&address=0xbC9091bE033b276b7c2244495699491167C20037&startblock=0&endblock=25042540&page=1&offset=10000&sort=desc&apikey=7GD7VH73QXDCP89CXN2J1J821IHARAVI27"
 
 export const updateDestinationHash = async (collection) => {
   const allTrxs = await get_all_trxs_from_contract();
-  const updatedOnes = [];
+  let updatedOnes = [];
 
   for (let item of allTrxs) {
-    const originalActionId = await evmDestinationActionId(item.hash, "https://polygon-rpc.com");
+    try {
+      const originalActionId = await evmDestinationActionId(item.hash, "https://polygon-rpc.com");
 
-    // console.log(item.hash);
-    // console.log(originalActionId);
+      console.log({ hash: item.hash, originalActionId });
 
-    const trxWithoutToHash = await collection
-      .find({
-        toChain: "7",
-        actionId: originalActionId.toString(),
-        toHash: null,
-      })
-      .toArray();
+      const trxsWithoutToHash = await collection
+        .find({
+          toChain: "7",
+          actionId: originalActionId.toString(),
+          toHash: null,
+          status: "Failed",
+        })
+        .toArray();
 
-    if (trxWithoutToHash.length === 1) {
-      await collection.updateOne(
-        { toChain: "7", actionId: originalActionId.toString(), toHash: null },
-        { $set: { toHash: item.hash.toString() } }
-      );
+      if (trxsWithoutToHash.length === 1) {
+        await collection.updateOne(
+          { toChain: "7", actionId: originalActionId.toString(), toHash: null },
+          { $set: { toHash: item.hash.toString(), status: "Completed" } }
+        );
 
-      updatedOnes.push({ toHash: item.hash.toString() });
+        updatedOnes.push({ toHash: item.hash.toString() });
 
-      console.log("updated!!!!!!!: ", {
-        toHash: item.hash.toString(),
-        originalActionId: originalActionId,
-      });
-    }
-    if (trxWithoutToHash.length === 0) {
-      console.log("all good: ", {
-        toHash: item.hash.toString(),
-        originalActionId: originalActionId,
-      });
+        console.log("updated!!!!!!!: ", {
+          toHash: item.hash.toString(),
+          originalActionId: originalActionId,
+        });
+      }
+      if (trxsWithoutToHash.length === 0) {
+        console.log("all good: ", {
+          toHash: item.hash.toString(),
+          originalActionId: originalActionId,
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+      continue;
     }
   }
-  console.log(updatedOnes)
+  console.log(updatedOnes);
 };
