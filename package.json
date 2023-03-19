@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@elrondnetwork/erdjs": "^11.0.0",
+    "@moralisweb3/common-evm-utils": "^2.14.3",
     "@taquito/taquito": "^14.0.0",
     "@taquito/utils": "^14.0.0",
     "@temple-wallet/dapp": "^7.0.0",
@@ -20,6 +21,7 @@
     "ethers": "^5.6.9",
     "moment": "^2.29.1",
     "mongodb": "^4.8.1",
+    "moralis": "^2.14.3",
     "node-fetch": "^3.2.10",
     "nodemon": "^2.0.19",
     "secretjs": "^1.4.5",

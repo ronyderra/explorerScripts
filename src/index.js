@@ -11,19 +11,57 @@ import moment from "moment";
 import fetch from "node-fetch";
 import { updateDestinationHash } from "./Polygon/get_dest_hash.js";
 import { ethers } from "ethers";
-import { scrapeit } from "./Binance/binance.js";
+// import { scrapeit } from "./Binance/binance.js";
+import { getTrx } from "./Binance/getTrx.js";
+import Moralis from "moralis";
+import { EvmChain } from "@moralisweb3/common-evm-utils";
 
 (async () => {
-  // const DB_URL = process.env.DB_URL;
-  // const client = new MongoClient(DB_URL);
+  const DB_URL = process.env.DB_URL;
+  const client = new MongoClient(DB_URL);
   // console.log("got here");
-  scrapeit();
+  // scrapeit();
+
   // await client.connect();
 
   // console.log("Connected successfully to server");
+  const runApp = async () => {
+    await Moralis.start({
+      apiKey: "YOUR_API_KEY",
+      // ...and any other configuration
+    });
+  
+    const address = "0xd8da6bf26964af9d7eed9e03e53415d37aa96045";
+  
+    const chain = EvmChain.ETHEREUM;
+  
+    const response = await Moralis.EvmApi.nft.getWalletNFTs({
+       address,
+       chain,
+    });
+  
+    console.log(response.toJSON());
+  }
+  
+  runApp();
 
   // const db = client.db("myFirstDatabase");
   // const collection = db.collection("bridge-event");
+  // const daily = db.collection("daily-data");
+
+  // const funcs = async () => {
+  //   const data = await collection
+  //     .find({ createdAt: { $gte: new Date(new Date().setDate(new Date().getDate() - 30)) } })
+  //     .toArray();
+
+  //   const sender = data.map((i) => i.senderAddress);
+  //   const target = data.map((i) => i.targetAddress);
+  //   let primes = sender.concat(target);
+  //   const unique = [...new Set(primes)];
+  //   console.log({ unique });
+  //   console.log(unique.length);
+  // };
+  // funcs();
 
   // const dos = async (collection) => {
   //   const data = await collection
